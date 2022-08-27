@@ -5,7 +5,7 @@ import {
   StyleSheet,
   FlatList,
   TouchableOpacity,
-  Button,
+  Button
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { NavigationContainer } from "@react-navigation/native";
@@ -14,6 +14,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { createStackNavigator } from "@react-navigation/stack";
 import IdTable from "./Table";
 import Test from "./CRUD";
+import GETDATA from "./DAta";
 import { db } from "../Core/config";
 import {
   deleteDoc,
@@ -76,7 +77,7 @@ function SecurityList() {
 function EducationList() {
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Car></Car>
+      <Text>EducationList</Text>
     </View>
   );
 }
@@ -123,9 +124,26 @@ function MyList() {
   );
 }
 function Account() {
+  useEffect(() => {
+    // bucket이라는 변수로 firestore의 collection인 bucket에 접근
+    const ref=db.collection("item_info");
+
+    // 모든 document 가져오기
+    ref.get().then((docs) => {
+      // 반복문으로 docuemnt 하나씩 확인
+      docs.forEach((doc) => {
+        if(doc.exists){
+          // document의 데이터
+          console.log(doc.data());
+          // document의 id
+          console.log(doc.id);
+        }
+      });
+    });
+  
+  });
   return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>Account!</Text>
+    <View className="App">
     </View>
   );
 }
@@ -181,60 +199,3 @@ const screenOptionStyle = {
   headerBackTitle: "",
   tabBarStyle: [{ backgroundColor: "#68CDC1" }],
 };
-
-function Car() {
-  const [value_data, setvalue_data] = useState([
-    {
-      category: "여가",
-      id: "디폴트",
-      is_able: false,
-      return_time: Date(),
-    },
-  ]);
-  const addCollection = collection(db, "item_info");
-  const defalut_data = async () => {
-    const q = await query(
-      addCollection
-      //where("risk", "!=", "dd"),
-      //orderBy("risk", "desc"),
-
-      //limit(1)
-    );
-    const getdata = await getDocs(q);
-    const resultdata = getdata.docs.map((doc) => ({ ...doc.data() }));
-
-    setvalue_data((data) => (data = JSON.parse(JSON.stringify(resultdata))));
-    //console.log(resultdata);
-    // alert(resultdata)
-  };
-  useEffect(() => {
-    defalut_data();
-
-    return () => {};
-  }, []);
-  return (
-    <ScrollView>
-      {value_data && value_data.length !== 0 ? (
-        <>
-          {value_data.map((l, i) => (
-            <>
-              <ListItem
-                key={i}
-                bottomDivider
-                onPress={() => navigation.navigate("Listitems")}
-              >
-                <Avatar source={{ uri: l.is_able }} />
-                <ListItem.Content>
-                  <ListItem.Title>{l.id}</ListItem.Title>
-                  <ListItem.Subtitle>{l.return_time}</ListItem.Subtitle>
-                </ListItem.Content>
-              </ListItem>
-            </>
-          ))}
-        </>
-      ) : (
-        ""
-      )}
-    </ScrollView>
-  );
-}

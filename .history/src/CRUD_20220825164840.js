@@ -27,8 +27,8 @@ if (!global.atob) {
 export default function Test() {
   const [userDoc, setUserDoc] = useState(null);
   // Update Text
-  const [category, setCategory] = useState("");
-  const [id, setid] = useState("");
+  const [text, setText] = useState("");
+  const [name, setName] = useState("");
 
   // MARK: CRUD Functions
   const Create = () => {
@@ -57,6 +57,10 @@ export default function Test() {
   const Read = () => {
     // MARK: Reading Doc
     // You can read what ever document by changing the collection and document path here
+    // const myDoc = doc(db, "student_info", "MyDocument");
+    const myDoc = doc(db, "student_info");
+
+    myDoc.
 
     getDoc(myDoc)
       // Handling Promises
@@ -108,21 +112,30 @@ export default function Test() {
       });
   };
   const Add = () => {
-    setDoc(doc(db, "item_info", id), {
-      category: category,
-      id: id,
-      is_able: true,
-      return_time: new Date(),
+
+    addDoc(collection(db, "item_info"), {
+      id: category,
+      is_reserve: false,
     })
       .then(() => {
         alert("Updated Successfully!");
-        // setCategory(""); 잠깐 편의를 위해!
-        setid("");
+        setText("");
       })
       .catch((error) => {
         alert(error.message);
       });
   };
+
+  // const EX=()=>{const citiesRef = db.collection('student_info');
+  // const snapshot =  citiesRef.where('is_reserve', '==', true).get();
+  // if (snapshot.empty) {
+  //   console.log('No matching documents.');
+  //   return;
+  // }
+  
+  // snapshot.forEach(doc => {
+  //   console.log(doc.id, '=>', doc.data());
+  // });}
 
   return (
     <View style={styles.container}>
@@ -137,12 +150,15 @@ export default function Test() {
           borderRadius: 10,
           marginVertical: 20,
         }}
-        placeholder="Category"
+        placeholder="Type Your Name"
         onChangeText={(category) => {
-          setCategory(category);
+          setText(category);
         }}
         value={category}
       ></TextInput>
+      <Button title="Add New Doc" onPress={Add}></Button>
+      <Button title="EX" onPress={Read}></Button>
+      {userDoc != null && <Text>Bio: {userDoc.bio}</Text>}
       <TextInput
         style={{
           width: "95%",
@@ -153,18 +169,13 @@ export default function Test() {
           borderRadius: 10,
           marginVertical: 20,
         }}
-        placeholder="Type Your id"
-        onChangeText={(id) => {
-          setid(id);
+        placeholder="Type Your Name"
+        onChangeText={(name) => {
+          setName(name);
         }}
-        value={id}
+        value={name}
       ></TextInput>
-      <Button title="Add New Doc" onPress={Add}></Button>
-      {/* <Button title="EX" onPress={Read}></Button> */}
-      {userDoc != null && <Text>Bio: {userDoc.bio}</Text>}
-
-      {/* <Button
->>>>>>> cd2e6d2b1b87bc3d1bda60d2c24bdc5662b5a1c2
+      <Button
         title="Update Doc"
         onPress={() => {
           Update(
@@ -174,9 +185,8 @@ export default function Test() {
             true
           );
         }}
-
-        // disabled={id == ""}
-      ></Button> */}
+        // disabled={name == ""}
+      ></Button>
     </View>
   );
 }

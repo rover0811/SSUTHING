@@ -57,6 +57,10 @@ export default function Test() {
   const Read = () => {
     // MARK: Reading Doc
     // You can read what ever document by changing the collection and document path here
+    // const myDoc = doc(db, "student_info", "MyDocument");
+    const myDoc = doc(db, "student_info");
+
+    myDoc.
 
     getDoc(myDoc)
       // Handling Promises
@@ -108,21 +112,33 @@ export default function Test() {
       });
   };
   const Add = () => {
-    setDoc(doc(db, "item_info", id), {
+
+    setDoc(doc(db,"student_info",id), {
       category: category,
-      id: id,
-      is_able: true,
+      id:id,
+      is_able:true,
       return_time: new Date(),
     })
       .then(() => {
         alert("Updated Successfully!");
-        // setCategory(""); 잠깐 편의를 위해!
+        setCategory("");
         setid("");
       })
       .catch((error) => {
         alert(error.message);
       });
   };
+
+  // const EX=()=>{const citiesRef = db.collection('student_info');
+  // const snapshot =  citiesRef.where('is_reserve', '==', true).get();
+  // if (snapshot.empty) {
+  //   console.log('No matching documents.');
+  //   return;
+  // }
+  
+  // snapshot.forEach(doc => {
+  //   console.log(doc.id, '=>', doc.data());
+  // });}
 
   return (
     <View style={styles.container}>
@@ -162,9 +178,8 @@ export default function Test() {
       <Button title="Add New Doc" onPress={Add}></Button>
       {/* <Button title="EX" onPress={Read}></Button> */}
       {userDoc != null && <Text>Bio: {userDoc.bio}</Text>}
-
+      
       {/* <Button
->>>>>>> cd2e6d2b1b87bc3d1bda60d2c24bdc5662b5a1c2
         title="Update Doc"
         onPress={() => {
           Update(
@@ -174,7 +189,6 @@ export default function Test() {
             true
           );
         }}
-
         // disabled={id == ""}
       ></Button> */}
     </View>

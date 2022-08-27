@@ -8,8 +8,6 @@ import {
   getDocs,
   whereField,
   isEqualTo,
-  query,
-  where,
 } from "firebase/firestore";
 import React from "react";
 import { Button, StyleSheet, Text, TextInput, View } from "react-native";
@@ -27,8 +25,8 @@ if (!global.atob) {
 export default function Test() {
   const [userDoc, setUserDoc] = useState(null);
   // Update Text
-  const [category, setCategory] = useState("");
-  const [id, setid] = useState("");
+  const [text, setText] = useState("");
+  const [name, setName] = useState("");
 
   // MARK: CRUD Functions
   const Create = () => {
@@ -57,6 +55,9 @@ export default function Test() {
   const Read = () => {
     // MARK: Reading Doc
     // You can read what ever document by changing the collection and document path here
+    // const myDoc = doc(db, "student_info", "MyDocument");
+    const myDoc = doc(db, "student_info");
+
 
     getDoc(myDoc)
       // Handling Promises
@@ -108,18 +109,26 @@ export default function Test() {
       });
   };
   const Add = () => {
-    setDoc(doc(db, "item_info", id), {
-      category: category,
-      id: id,
-      is_able: true,
-      return_time: new Date(),
+    // MARK: Updating Doc
+    // const myDoc = doc(db, "student_info", "MyDocument");
+
+    // If you set merge true then it will merge with existing doc otherwise it will be a fresh one
+    // addDoc(collection(db, "student_info"), {
+    //   id: text,
+    //   is_reserve: false,
+    // })
+    addDoc(collection(db, "student_info"), {
+      id: text,
+      is_reserve: false,
     })
+      // Handling Promises
       .then(() => {
+        // MARK: Success
         alert("Updated Successfully!");
-        // setCategory(""); 잠깐 편의를 위해!
-        setid("");
+        setText("");
       })
       .catch((error) => {
+        // MARK: Failure
         alert(error.message);
       });
   };
@@ -137,12 +146,15 @@ export default function Test() {
           borderRadius: 10,
           marginVertical: 20,
         }}
-        placeholder="Category"
-        onChangeText={(category) => {
-          setCategory(category);
+        placeholder="Type Your Name"
+        onChangeText={(text) => {
+          setText(text);
         }}
-        value={category}
+        value={text}
       ></TextInput>
+      <Button title="Add New Doc" onPress={Add}></Button>
+      <Button title="Read Doc" onPress={Read}></Button>
+      {userDoc != null && <Text>Bio: {userDoc.bio}</Text>}
       <TextInput
         style={{
           width: "95%",
@@ -153,18 +165,13 @@ export default function Test() {
           borderRadius: 10,
           marginVertical: 20,
         }}
-        placeholder="Type Your id"
-        onChangeText={(id) => {
-          setid(id);
+        placeholder="Type Your Name"
+        onChangeText={(name) => {
+          setName(name);
         }}
-        value={id}
+        value={name}
       ></TextInput>
-      <Button title="Add New Doc" onPress={Add}></Button>
-      {/* <Button title="EX" onPress={Read}></Button> */}
-      {userDoc != null && <Text>Bio: {userDoc.bio}</Text>}
-
-      {/* <Button
->>>>>>> cd2e6d2b1b87bc3d1bda60d2c24bdc5662b5a1c2
+      <Button
         title="Update Doc"
         onPress={() => {
           Update(
@@ -174,9 +181,8 @@ export default function Test() {
             true
           );
         }}
-
-        // disabled={id == ""}
-      ></Button> */}
+        // disabled={name == ""}
+      ></Button>
     </View>
   );
 }

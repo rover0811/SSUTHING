@@ -15,6 +15,7 @@ import { db } from "../Core/config";
 import { decode, encode, atob } from "base-64";
 import Test from "./CRUD";
 import Nav from "./Nav";
+import Car from "./Nav";
 
 if (!global.btoa) {
   global.btoa = encode;

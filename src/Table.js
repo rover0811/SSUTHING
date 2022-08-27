@@ -22,9 +22,9 @@ export default class IdTable extends Component {
     super(props);
 
     this.fields = [
-      { key: "code", title: "물건 이름", width: 150 },
+      { key: "id", title: "id", width: 150 },
       { key: "responsable", title: "예약여부", width: 100 },
-      // { key: "piezas", title: "반납 예정 시간" },
+      { key: "category", title: "category", width: 50 },
       { key: "peso", title: "예약하기", width: 100 },
       // { key: 'inicio', title: 'INICIO', width: 100 },
       // { key: 'termino', title: 'ENTREGA', width: 100 },
@@ -36,17 +36,10 @@ export default class IdTable extends Component {
     ];
 
     this.rows = Array.apply(null, Array(125)).map((item, idx) => ({
-      code: `TEST-ITEM-${idx}`,
+      id: `TEST-ITEM-${idx}`,
       responsable: "Y",
-      // piezas: Date(),
+      category: "여가",
       peso: <Odal></Odal>,
-      // inicio: '2019-02-01',
-      // termino: '2019-04-30',
-      // hab: 0,
-      // arm: 0,
-      // bar: 0,
-      // sol: 0,
-      // insp: 0,
     }));
 
     this.state = {

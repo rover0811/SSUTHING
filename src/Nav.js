@@ -6,12 +6,15 @@ import {
   FlatList,
   TouchableOpacity,
   Button,
+  ScrollView,
 } from "react-native";
+import { useState, useEffect } from "react";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { createStackNavigator } from "@react-navigation/stack";
+import { ListItem } from "@rneui/themed";
 import IdTable from "./Table";
 import Test from "./CRUD";
 import { db } from "../Core/config";
@@ -74,11 +77,7 @@ function SecurityList() {
   );
 }
 function EducationList() {
-  return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Car></Car>
-    </View>
-  );
+  return <Car></Car>;
 }
 function FestivalList() {
   return (
@@ -186,7 +185,7 @@ function Car() {
   const [value_data, setvalue_data] = useState([
     {
       category: "여가",
-      id: "디폴트",
+      id: "default",
       is_able: false,
       return_time: Date(),
     },
@@ -223,10 +222,10 @@ function Car() {
                 bottomDivider
                 onPress={() => navigation.navigate("Listitems")}
               >
-                <Avatar source={{ uri: l.is_able }} />
+                {/* <Avatar source={{ uri: l.is_able }} /> */}
                 <ListItem.Content>
-                  <ListItem.Title>{l.id}</ListItem.Title>
-                  <ListItem.Subtitle>{l.return_time}</ListItem.Subtitle>
+                  <ListItem.Title>{l.category}</ListItem.Title>
+                  <ListItem.Subtitle>{l.id}</ListItem.Subtitle>
                 </ListItem.Content>
               </ListItem>
             </>
